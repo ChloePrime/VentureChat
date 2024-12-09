@@ -2,6 +2,7 @@ package mineverse.Aust1n46.chat.listeners;
 
 import java.util.UUID;
 
+import mineverse.Aust1n46.chat._modifications_.ChloeModifications;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -72,22 +73,27 @@ public class LoginListener implements Listener {
 				mcp.addListening(ch.getName());
 			}
 		}
-		
+
+		boolean isVelocity = ChloeModifications.isMySpecialEnvironment;
 		try {
 			if(plugin.getServer().spigot().getConfig().getBoolean("settings.bungeecord") 
 					|| plugin.getServer().spigot().getPaperConfig().getBoolean("settings.velocity-support.enabled") 
 					|| plugin.getServer().spigot().getPaperConfig().getBoolean("proxies.velocity.enabled")) {
-				long delayInTicks = 20L;
-				final MineverseChatPlayer sync = mcp;
-				plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, new Runnable() {
-					public void run() {
-						MineverseChat.synchronize(sync, false);
-					}
-				}, delayInTicks);
+				isVelocity = true;
 			}
 		}
 		catch(NoSuchMethodError exception) { // Thrown if server isn't Paper.
 			// Do nothing
+		}
+
+		if (isVelocity) {
+			long delayInTicks = 20L;
+			final MineverseChatPlayer sync = mcp;
+			plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, new Runnable() {
+				public void run() {
+					MineverseChat.synchronize(sync, false);
+				}
+			}, delayInTicks);
 		}
 	}
 }

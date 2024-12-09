@@ -10,6 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import mineverse.Aust1n46.chat._modifications_.ChloeModifications;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -468,7 +469,7 @@ public class Format {
 
 	public static PacketContainer createPacketPlayOutChat(String json) {
 		final PacketContainer container;
-		if (VersionHandler.isAtLeast_1_20_4()) { // 1.20.4+
+		if (VersionHandler.isAtLeast_1_20_4() || ChloeModifications.isMySpecialEnvironment) { // 1.20.4+
 			container = new PacketContainer(PacketType.Play.Server.SYSTEM_CHAT);
 			container.getChatComponents().write(0, WrappedChatComponent.fromJson(json));
 			container.getBooleans().write(0, false);
